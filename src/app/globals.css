@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 2. Configure the 'dark' variant to look for data-theme="dark" */
+/* This is the standard way to create manual dark mode in Tailwind v4 */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* 3. (Optional - Advanced) Define custom theme variables using @theme */
+/* These variables influence which utility classes exist and their values */
+@theme {
+	/* Example: Redefine the 'primary' color with custom CSS variables */
+	--color-primary-500: oklch(50% 0.15 270);
+	--color-primary-600: oklch(40% 0.15 270);
+
+	/* Define dark mode colors using the light-dark() function (Requires newer browser support) */
+	/* This is one way to handle theming in a purely CSS way */
+	--color-brand-default: light-dark(oklch(50% 0.15 270), oklch(70% 0.15 270)); /* light value, dark value */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 4. Base styles (optional but good practice) */
+@layer base {
+	/* Apply system font and smooth rendering */
+	html {
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
 }
