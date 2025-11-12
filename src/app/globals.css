@@ -5,22 +5,167 @@
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /* 3. (Optional - Advanced) Define custom theme variables using @theme */
-/* These variables influence which utility classes exist and their values */
+/*
+ * NOTE: The HSL variables below in @layer base define the colors,
+ * so the previous @theme block is no longer needed unless you have other
+ * custom utilities/variables to define. I've commented out the original
+ * theme block as it conflicts with the new HSL variables.
+ */
+/*
 @theme {
-	/* Example: Redefine the 'primary' color with custom CSS variables */
-	--color-primary-500: oklch(50% 0.15 270);
-	--color-primary-600: oklch(40% 0.15 270);
+    // Example: Redefine the 'primary' color with custom CSS variables
+    // --color-primary-500: oklch(50% 0.15 270);
+    // --color-primary-600: oklch(40% 0.15 270);
 
-	/* Define dark mode colors using the light-dark() function (Requires newer browser support) */
-	/* This is one way to handle theming in a purely CSS way */
-	--color-brand-default: light-dark(oklch(50% 0.15 270), oklch(70% 0.15 270)); /* light value, dark value */
+    // Define dark mode colors using the light-dark() function (Requires newer browser support)
+    // --color-brand-default: light-dark(oklch(50% 0.15 270), oklch(70% 0.15 270)); // light value, dark value
 }
+*/
 
-/* 4. Base styles (optional but good practice) */
+/* 4. Base styles: Define your design system colors and general base elements */
 @layer base {
 	/* Apply system font and smooth rendering */
 	html {
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* Light Mode (Default) HSL Color Variables */
+	:root {
+		--background: 250 33% 95%;
+		--foreground: 254 35% 20%;
+
+		--card: 0 0% 100%;
+		--card-foreground: 254 35% 20%;
+
+		--popover: 0 0% 100%;
+		--popover-foreground: 254 35% 20%;
+
+		--primary: 6 72% 34%;
+		--primary-foreground: 0 0% 100%;
+
+		--secondary: 254 44% 80%;
+		--secondary-foreground: 254 35% 20%;
+
+		--muted: 250 33% 90%;
+		--muted-foreground: 254 20% 45%;
+
+		--accent: 233 44% 67%;
+		--accent-foreground: 254 35% 20%;
+
+		--cta: 6 72% 34%;
+		--cta-foreground: 0 0% 100%;
+
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 100%;
+
+		--border: 254 20% 85%;
+		--input: 254 20% 85%;
+		--ring: 6 72% 34%;
+
+		--overlay: 0 0% 0%;
+
+		--radius: 0.75rem;
+
+		/* Theme Switch Background Colors */
+		--theme-switch-bg: 0 0% 90%;
+	}
+
+	/* Dark Mode HSL Color Variables */
+	/* We target the [data-theme='dark'] selector to match your custom 'dark' variant */
+	[data-theme="dark"] {
+		--background: 254 35% 45%;
+		--foreground: 250 33% 95%;
+
+		--card: 254 35% 50%;
+		--card-foreground: 250 33% 95%;
+
+		--popover: 254 35% 50%;
+		--popover-foreground: 250 33% 95%;
+
+		--primary: 6 72% 42%;
+		--primary-foreground: 0 0% 100%;
+
+		--secondary: 254 44% 80%;
+		--secondary-foreground: 254 35% 20%;
+
+		--muted: 254 35% 55%;
+		--muted-foreground: 250 33% 85%;
+
+		--accent: 233 44% 67%;
+		--accent-foreground: 254 35% 20%;
+
+		--cta: 6 72% 42%;
+		--cta-foreground: 0 0% 100%;
+
+		--border: 254 35% 55%;
+		--input: 254 35% 55%;
+		--ring: 233 44% 67%;
+
+		--overlay: 0 0% 0%;
+
+		/* Theme Switch Background Colors */
+		--theme-switch-bg: 254 35% 25%;
+	}
+
+	/* Apply global styles using the defined variables */
+	* {
+		border-color: hsl(var(--border));
+	}
+
+	body {
+		/* Set background and text color based on the theme variables */
+		background-color: hsl(var(--background));
+		color: hsl(var(--foreground));
+	}
+
+	/* Global styles for interactive elements */
+	a {
+		cursor: pointer;
+		color: #292145;
+		transition: color 0.2s;
+	}
+
+	a:hover {
+		color: #5d4b9b;
+	}
+
+	button {
+		cursor: pointer;
+	}
+
+	button:disabled {
+		cursor: not-allowed;
+	}
+
+	/* CTA Button Styles - Utility classes only */
+	/* Note: Hover states are handled by individual components (e.g., button.tsx) */
+	.bg-cta {
+		background-color: hsl(var(--cta));
+	}
+
+	.text-cta-foreground {
+		color: hsl(var(--cta-foreground));
+	}
+
+	/* Link and ThemeSwitch text color utilities */
+	.text-link-default {
+		color: #292145;
+	}
+
+	.hover\:text-link-hover:hover {
+		color: #5d4b9b;
+	}
+
+	/* Theme Switch Icon Container */
+	.theme-switch-icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.5rem;
+		height: 1.5rem;
+		background-color: hsl(var(--theme-switch-bg));
+		border-radius: 0.375rem;
+		padding: 0.25rem;
 	}
 }
