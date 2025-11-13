@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ThemeSwitch } from "@/components/ThemeSwitch";
 import { Button } from "@/components/ui/button";
+import ContactFormDialog from "@/components/ContactFormDialog";
 
 const Navbar = () => {
 	const [showContactForm, setShowContactForm] = useState(false);
@@ -155,24 +156,10 @@ const Navbar = () => {
 					</div>
 				)}
 			</nav>
-			{showContactForm && (
-				<div className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/50">
-					<div className="bg-card rounded-lg p-6 max-w-md w-full mx-4">
-						<div className="flex justify-between items-center mb-4">
-							<h2 className="text-xl font-bold text-card-foreground">Contact Us</h2>
-							<Button
-								onClick={() => setShowContactForm(false)}
-								variant="ghost"
-								size="icon"
-								aria-label="Close contact form"
-							>
-								✕
-							</Button>
-						</div>
-						<p className="text-muted-foreground">Contact form will be implemented here.</p>
-					</div>
-				</div>
-			)}
+			<ContactFormDialog
+				open={showContactForm}
+				onOpenChange={setShowContactForm}
+			/>
 		</>
 	);
 };

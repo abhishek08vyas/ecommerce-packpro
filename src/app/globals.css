@@ -203,6 +203,15 @@
 		}
 	}
 
+	@keyframes slide-in-from-right {
+		from {
+			transform: translateX(100%);
+		}
+		to {
+			transform: translateX(0);
+		}
+	}
+
 	@keyframes slide-out-to-right {
 		from {
 			transform: translateX(0);
@@ -231,6 +240,10 @@
 
 	.slide-in-from-bottom-full {
 		animation: slide-in-from-bottom 0.2s ease-out, fade-in 0.15s ease-out;
+	}
+
+	.slide-in-from-right-full {
+		animation: slide-in-from-right 0.2s ease-out, fade-in 0.15s ease-out;
 	}
 
 	.slide-out-to-right-full {
