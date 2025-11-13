@@ -55,20 +55,20 @@ const Navbar = () => {
 								d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
 							/>
 						</svg>
-						<span className="text-xl font-bold">PackPro Solutions</span>
+						<span className="text-xl font-bold dark:text-white">PackPro Solutions</span>
 					</Link>
 
 					{/* Desktop Navigation */}
 					<div className="hidden md:flex items-center gap-6">
 						<Link
 							href="/"
-							className="text-sm font-medium transition-colors"
+							className="text-sm font-medium transition-colors dark:text-white"
 						>
 							Home
 						</Link>
 						<Link
 							href="/products"
-							className="text-sm font-medium transition-colors"
+							className="text-sm font-medium transition-colors dark:text-white"
 						>
 							Products
 						</Link>
@@ -133,14 +133,14 @@ const Navbar = () => {
 							<Link
 								href="/"
 								onClick={closeMobileMenu}
-								className="text-sm font-medium transition-colors py-2 px-4 rounded-md hover:bg-muted"
+								className="text-sm font-medium transition-colors py-2 px-4 rounded-md hover:bg-muted dark:text-white"
 							>
 								Home
 							</Link>
 							<Link
 								href="/products"
 								onClick={closeMobileMenu}
-								className="text-sm font-medium transition-colors py-2 px-4 rounded-md hover:bg-muted"
+								className="text-sm font-medium transition-colors py-2 px-4 rounded-md hover:bg-muted dark:text-white"
 							>
 								Products
 							</Link>

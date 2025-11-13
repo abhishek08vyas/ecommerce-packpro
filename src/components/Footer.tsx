@@ -33,25 +33,25 @@ const Footer = () => {
 						<h3 className="font-semibold text-sm uppercase tracking-wider text-card-foreground mb-1">Products</h3>
 						<Link
 							href="/products"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							All Products
 						</Link>
 						<Link
 							href="/products/boxes"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Shipping Boxes
 						</Link>
 						<Link
 							href="/products/mailers"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Poly Mailers
 						</Link>
 						<Link
 							href="/products/supplies"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Packaging Supplies
 						</Link>
@@ -62,19 +62,19 @@ const Footer = () => {
 						<h3 className="font-semibold text-sm uppercase tracking-wider text-card-foreground mb-1">Company</h3>
 						<Link
 							href="/about"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							About Us
 						</Link>
 						<Link
 							href="/contact"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Contact
 						</Link>
 						<Link
 							href="/careers"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Careers
 						</Link>
@@ -85,25 +85,25 @@ const Footer = () => {
 						<h3 className="font-semibold text-sm uppercase tracking-wider text-card-foreground mb-1">Support</h3>
 						<Link
 							href="/faq"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							FAQ
 						</Link>
 						<Link
 							href="/shipping"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Shipping Info
 						</Link>
 						<Link
 							href="/returns"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Returns
 						</Link>
 						<Link
 							href="/privacy"
-							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-sm text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 						>
 							Privacy Policy
 						</Link>
@@ -121,7 +121,7 @@ const Footer = () => {
 					<div className="flex items-center gap-4">
 						<a
 							href="#"
-							className="text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 							aria-label="Facebook"
 						>
 							<svg
@@ -134,7 +134,7 @@ const Footer = () => {
 						</a>
 						<a
 							href="#"
-							className="text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 							aria-label="Twitter"
 						>
 							<svg
@@ -147,7 +147,7 @@ const Footer = () => {
 						</a>
 						<a
 							href="#"
-							className="text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 							aria-label="LinkedIn"
 						>
 							<svg
@@ -160,7 +160,7 @@ const Footer = () => {
 						</a>
 						<a
 							href="#"
-							className="text-muted-foreground hover:text-primary transition-colors duration-200"
+							className="text-muted-foreground hover:text-primary transition-colors duration-200 dark:text-white"
 							aria-label="Instagram"
 						>
 							<svg
