@@ -4,11 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
+import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface ContactFormDialogProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
+}
+
+interface FormErrors {
+	name?: string;
+	email?: string;
+	phone?: string;
+	subject?: string;
+	message?: string;
 }
 
 const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
@@ -20,15 +29,91 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 		subject: "",
 		message: "",
 	});
+	const [errors, setErrors] = useState<FormErrors>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
+	// Validation functions
+	const validateEmail = (email: string): boolean => {
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		return emailRegex.test(email);
+	};
+
+	const validatePhone = (phone: string): boolean => {
+		// Remove common phone formatting characters
+		const cleaned = phone.replace(/[\s\-\(\)\+]/g, "");
+		// Check if it contains only digits and has reasonable length (7-15 digits)
+		return /^\d{7,15}$/.test(cleaned);
+	};
+
+	const validateForm = (): boolean => {
+		const newErrors: FormErrors = {};
+
+		// Validate name
+		if (!formData.name.trim()) {
+			newErrors.name = "Full name is required";
+		} else if (formData.name.trim().length < 2) {
+			newErrors.name = "Full name must be at least 2 characters";
+		}
+
+		// Validate email
+		if (!formData.email.trim()) {
+			newErrors.email = "Email is required";
+		} else if (!validateEmail(formData.email)) {
+			newErrors.email = "Please enter a valid email address";
+		}
+
+		// Validate phone
+		if (!formData.phone.trim()) {
+			newErrors.phone = "Phone number is required";
+		} else if (!validatePhone(formData.phone)) {
+			newErrors.phone = "Please enter a valid phone number";
+		}
+
+		// Validate subject
+		if (!formData.subject.trim()) {
+			newErrors.subject = "Subject is required";
+		} else if (formData.subject.trim().length < 3) {
+			newErrors.subject = "Subject must be at least 3 characters";
+		}
+
+		// Validate message
+		if (!formData.message.trim()) {
+			newErrors.message = "Message is required";
+		} else if (formData.message.trim().length < 10) {
+			newErrors.message = "Message must be at least 10 characters";
+		}
+
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
+	};
+
+	const handleFieldChange = (field: keyof typeof formData, value: string) => {
+		setFormData({ ...formData, [field]: value });
+		// Clear error for this field when user starts typing
+		if (errors[field as keyof FormErrors]) {
+			setErrors({ ...errors, [field]: undefined });
+		}
+	};
+
 	const handleSubmit = async () => {
+		// Validate form before submission
+		if (!validateForm()) {
+			toast({
+				variant: "destructive",
+				title: "Validation Error",
+				description: "Please fix the errors in the form before submitting.",
+			});
+			return;
+		}
+
 		setIsSubmitting(true);
 
 		// Simulate form submission
 		await new Promise((resolve) => setTimeout(resolve, 1000));
 
-		toast.success("Message sent successfully!", {
+		toast({
+			variant: "success",
+			title: "Message sent successfully!",
 			description: "Our team will get back to you within 24 hours.",
 		});
 
@@ -40,14 +125,31 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 			subject: "",
 			message: "",
 		});
+		setErrors({});
 		setIsSubmitting(false);
 		onOpenChange(false);
+	};
+
+	const handleDialogChange = (newOpen: boolean) => {
+		if (!newOpen) {
+			// Reset form and errors when dialog closes
+			setFormData({
+				name: "",
+				email: "",
+				company: "",
+				phone: "",
+				subject: "",
+				message: "",
+			});
+			setErrors({});
+		}
+		onOpenChange(newOpen);
 	};
 
 	return (
 		<Dialog
 			open={open}
-			onOpenChange={onOpenChange}
+			onOpenChange={handleDialogChange}
 		>
 			<DialogContent className="max-w-[95vw] sm:max-w-[550px] h-[95vh] sm:h-[90vh] max-h-[95vh] sm:max-h-[90vh] bg-white dark:bg-[hsl(253,45%,55%)] text-slate-900 dark:text-white p-0 overflow-hidden flex flex-col">
 				<div className="px-6 pt-6 pb-4 border-b border-slate-200 dark:border-purple-400/50 shrink-0">
@@ -69,10 +171,11 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 								id="contact-name"
 								required
 								value={formData.name}
-								onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+								onChange={(e) => handleFieldChange("name", e.target.value)}
 								placeholder="John Doe"
-								className="dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50"
+								className={cn("dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50", errors.name && "border-red-500 focus-visible:ring-red-500 dark:border-red-400")}
 							/>
+							{errors.name && <p className="text-sm text-red-600 dark:text-red-400">{errors.name}</p>}
 						</div>
 						<div className="space-y-2">
 							<Label
@@ -86,10 +189,11 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 								type="email"
 								required
 								value={formData.email}
-								onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+								onChange={(e) => handleFieldChange("email", e.target.value)}
 								placeholder="john@company.com"
-								className="dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50"
+								className={cn("dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50", errors.email && "border-red-500 focus-visible:ring-red-500 dark:border-red-400")}
 							/>
+							{errors.email && <p className="text-sm text-red-600 dark:text-red-400">{errors.email}</p>}
 						</div>
 						<div className="space-y-2">
 							<Label
@@ -101,7 +205,7 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 							<Input
 								id="contact-company"
 								value={formData.company}
-								onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+								onChange={(e) => handleFieldChange("company", e.target.value)}
 								placeholder="ABC Corporation"
 								className="dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50"
 							/>
@@ -118,10 +222,11 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 								type="tel"
 								required
 								value={formData.phone}
-								onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+								onChange={(e) => handleFieldChange("phone", e.target.value)}
 								placeholder="+1 (555) 000-0000"
-								className="dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50"
+								className={cn("dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50", errors.phone && "border-red-500 focus-visible:ring-red-500 dark:border-red-400")}
 							/>
+							{errors.phone && <p className="text-sm text-red-600 dark:text-red-400">{errors.phone}</p>}
 						</div>
 						<div className="space-y-2">
 							<Label
@@ -134,10 +239,11 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 								id="contact-subject"
 								required
 								value={formData.subject}
-								onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+								onChange={(e) => handleFieldChange("subject", e.target.value)}
 								placeholder="How can we help you?"
-								className="dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50"
+								className={cn("dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50", errors.subject && "border-red-500 focus-visible:ring-red-500 dark:border-red-400")}
 							/>
+							{errors.subject && <p className="text-sm text-red-600 dark:text-red-400">{errors.subject}</p>}
 						</div>
 						<div className="space-y-2">
 							<Label
@@ -150,11 +256,12 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 								id="contact-message"
 								required
 								value={formData.message}
-								onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+								onChange={(e) => handleFieldChange("message", e.target.value)}
 								placeholder="Tell us more..."
 								rows={4}
-								className="resize-none dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50"
+								className={cn("resize-none dark:border-purple-400/50 dark:placeholder:text-white/80 dark:text-white focus-visible:ring-offset-0 dark:focus-visible:ring-purple-300/50", errors.message && "border-red-500 focus-visible:ring-red-500 dark:border-red-400")}
 							/>
+							{errors.message && <p className="text-sm text-red-600 dark:text-red-400">{errors.message}</p>}
 						</div>
 					</div>
 				</div>
@@ -164,7 +271,7 @@ const ContactFormDialog = ({ open, onOpenChange }: ContactFormDialogProps) => {
 							type="button"
 							variant="outline"
 							size="lg"
-							onClick={() => onOpenChange(false)}
+							onClick={() => handleDialogChange(false)}
 							className="flex-1 w-full dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 dark:border-white/20"
 						>
 							Cancel
