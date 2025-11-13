@@ -5,22 +5,10 @@
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
 /* 3. (Optional - Advanced) Define custom theme variables using @theme */
-/*
- * NOTE: The HSL variables below in @layer base define the colors,
- * so the previous @theme block is no longer needed unless you have other
- * custom utilities/variables to define. I've commented out the original
- * theme block as it conflicts with the new HSL variables.
- */
-/*
 @theme {
-    // Example: Redefine the 'primary' color with custom CSS variables
-    // --color-primary-500: oklch(50% 0.15 270);
-    // --color-primary-600: oklch(40% 0.15 270);
-
-    // Define dark mode colors using the light-dark() function (Requires newer browser support)
-    // --color-brand-default: light-dark(oklch(50% 0.15 270), oklch(70% 0.15 270)); // light value, dark value
+	/* Define purple color using CSS variable for gradient support */
+	--color-purple: hsl(var(--purple));
 }
-*/
 
 /* 4. Base styles: Define your design system colors and general base elements */
 @layer base {
@@ -65,6 +53,9 @@
 
 		--overlay: 0 0% 0%;
 
+		--purple: 270 50% 70%;
+		--purple-foreground: 0 0% 100%;
+
 		--radius: 0.75rem;
 
 		/* Theme Switch Background Colors */
@@ -103,6 +94,9 @@
 		--ring: 233 44% 67%;
 
 		--overlay: 0 0% 0%;
+
+		--purple: 270 50% 25%;
+		--purple-foreground: 250 33% 95%;
 
 		/* Theme Switch Background Colors */
 		--theme-switch-bg: 254 35% 25%;
